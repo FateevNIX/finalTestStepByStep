@@ -4,17 +4,19 @@ import org.hamcrest.Description;
 import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.hamcrest.core.Is;
 import org.openqa.selenium.WebElement;
 
 
-    public class HasTextMatcher extends TypeSafeMatcher<String>{
-
-        private WebElement element;
+    public class HasTextMatcher extends TypeSafeMatcher<WebElement>{
+        private final Matcher<String> textMatcher;
+        private HasTextMatcher(Matcher<String> textMatcher) {
+            this.textMatcher = textMatcher;
+        }
 
         @Override
-        public boolean matchesSafely(String text) {
-
-            return element.getText().contains(text);
+        public boolean matchesSafely(WebElement element) {
+            return this.textMatcher.matches(element.getText());
         }
 
         @Override
@@ -23,14 +25,14 @@ import org.openqa.selenium.WebElement;
         }
 
         @Override
-        public void describeMismatchSafely(String text, final Description mismatchDescription) {
-            mismatchDescription.appendText("element doesn't have next text ").appendValue(text);
+        public void describeMismatchSafely(WebElement element, final Description mismatchDescription) {
+            mismatchDescription.appendText("element doesn't have next text ").appendValue(textMatcher);
         }
 
 
         @Factory
-        public static Matcher<String> hasText(String text) {
-            return new HasTextMatcher();
+        public static Matcher<WebElement> hasText(String text) {
+            return new HasTextMatcher(Is.is(text));
         }
 
 

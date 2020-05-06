@@ -1,22 +1,23 @@
 package matchers;
 
+
 import org.hamcrest.Description;
 import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.openqa.selenium.WebElement;
-
+import java.util.NoSuchElementException;
 
 public class IsElementDisplayedMatcher extends TypeSafeMatcher<WebElement> {
 
 
     @Override
     protected boolean matchesSafely(WebElement element) {
-
-
-        return element.isDisplayed();
+        try {
+            return element.isDisplayed();
+        } catch (NoSuchElementException nsee) {
+            return false; }
     }
-
     @Override
     public void describeTo(Description description) {
         description.appendText("element is displayed");
