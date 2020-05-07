@@ -1,36 +1,29 @@
 package tests;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import org.testng.annotations.AfterClass;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import steps.BaseSteps;
+import org.testng.annotations.BeforeClass;
+
+
 
 public class BaseTest {
-    BaseSteps steps;
-
+    public String baseURL = ("http://automationpractice.com");
     public WebDriver driver;
-    public BaseSteps start() {
-        return steps;
-    }
+
+
 
     @BeforeClass
     public void setUp() {
        WebDriverManager.chromedriver().setup();
-       steps = new BaseSteps(driver);
+       driver = new ChromeDriver();
+       driver.get(baseURL);
+
     }
 
-    @Before
-    public void setupTest() {
-        driver = new ChromeDriver();
-    }
-
-    @After
+    @AfterClass
     public void teardown() {
-        if (driver != null) {
-            driver.quit();
-        }
+        if (driver != null) { driver.quit(); }
     }
 }
