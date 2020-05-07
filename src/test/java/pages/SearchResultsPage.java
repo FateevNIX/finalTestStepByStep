@@ -6,11 +6,11 @@ import io.qameta.atlas.webdriver.WebPage;
 import io.qameta.atlas.webdriver.extension.FindBy;
 import tests.HtmlElement;
 
-public interface SearchResultsPage extends WebPage {
+public interface SearchResultsPage extends BasePage {
     
-    @FindBy("#center_column > ul > li:nth-child(1)")
+    @FindBy("//a[@class='quick-view']")
     HtmlElement firstItemInGrid();
-    @FindBy("li:nth-child(1) * a.button.lnk_view.btn.btn-default")
+    @FindBy("//a[@class='button lnk_view btn btn-default']")
     HtmlElement moreButtonForFirstItem();
 
 }
