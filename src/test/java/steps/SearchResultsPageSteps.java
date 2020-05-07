@@ -5,14 +5,13 @@ import org.openqa.selenium.interactions.Actions;
 
 import pages.SearchResultsPage;
 import static matchers.IsElementDisplayedMatcher.isDisplayed;
+
 public class SearchResultsPageSteps extends BaseSteps {
-    private String searchResultsPageURL = ("http://automationpractice.com/index.php?controller=search");
+
     public SearchResultsPageSteps(WebDriver driver){
         super (driver);
     }
-    public String getSearchResultsPageURL(){
-        return searchResultsPageURL;
-    }
+
 
     public SearchResultsPageSteps moveToFirstProductInGrid(){
         // new WebDriverWait(driver,10).until(ExpectedConditions.elementToBeClickable(firstItemInGrid)); пока оставил как напоминание что тут надо убедится что элемент отображается

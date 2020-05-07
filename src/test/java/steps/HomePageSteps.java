@@ -7,23 +7,20 @@ import org.openqa.selenium.WebDriver;
 import pages.HomePage;
 
 
+
 import static matchers.IsElementDisplayedMatcher.isDisplayed;
 
 
 public class HomePageSteps extends BaseSteps {
-    public String homePageURL = ("http://automationpractice.com");
+
 
     public HomePageSteps(WebDriver driver){
        super (driver);
     }
 
-    public String getHomePageURL(){
-        return homePageURL;
-    }
-
     @Step
     public HomePageSteps enterProductName(String text){
-        AtlasWebElement searchTextBox = onHomePage().searchTextBox().should(isDisplayed());
+        AtlasWebElement searchTextBox = onHomePage().searchTextBox();
         searchTextBox.clear();
         searchTextBox.sendKeys(text);
         return this;

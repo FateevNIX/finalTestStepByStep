@@ -1,17 +1,17 @@
 package tests;
 
 import org.testng.annotations.Test;
+import steps.HomePageSteps;
 
 
 public class AddingProductsToCartTest extends BaseTest {
 
         @Test
         public void AddingProductsToCart () {
-
-            start()
-                    .openHomePage()
-                    .enterProductName("text")
-                    .clickSubmitButton();
+            HomePageSteps homePageSteps = new HomePageSteps(driver);
+            homePageSteps.
+                    enterProductName("text").
+                    clickSubmitButton();
 
         }
     }
