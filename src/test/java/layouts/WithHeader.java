@@ -7,7 +7,7 @@ import io.qameta.atlas.webdriver.extension.FindBy;
 import tests.HtmlElement;
 
 
-public interface WithHeader extends AtlasWebElement  {
+public interface WithHeader   {
     @FindBy("//input[@id='search_query_top']")
     HtmlElement searchTextBox();
 

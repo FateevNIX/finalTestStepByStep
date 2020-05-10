@@ -2,7 +2,7 @@ package pages;
 
 import layouts.WithHeader;
 
-public interface HomePage extends BasePage, WithHeader {
+public interface HomePage extends BasePage {
 
 
 }

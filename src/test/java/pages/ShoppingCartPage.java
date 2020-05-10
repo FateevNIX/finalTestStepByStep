@@ -1,16 +1,21 @@
 package pages;
 
 import io.qameta.atlas.webdriver.extension.FindBy;
-import org.openqa.selenium.By;
-
-
-import javax.xml.soap.Text;
+import tests.HtmlElement;
 
 public interface ShoppingCartPage extends BasePage {
-    By totalPrice = By.xpath("//span[contains(@id, 'total_product_price')]");
-    @FindBy("//td[2]/p/a")
-    Text productName();
-    By quantityOfProduct = By.xpath("//td[5]/input[2]");
-    By colourAndSize = By.xpath("//small[2]/a");
-    By trashcanButton = By.xpath("//a[@class='cart_quantity_delete']/i");
+    @FindBy("//span[contains(@id, 'total_product_price')]")
+    HtmlElement totalPrice();
+
+    @FindBy("//p[@class='product-name']/a")
+    HtmlElement productName();
+
+    @FindBy("//input[@class='cart_quantity_input form-control grey']")
+    HtmlElement quantityOfProduct();
+
+    @FindBy("//td[@class='cart_description']/small/a")
+    HtmlElement colourAndSize();
+
+    @FindBy("//i[@class='icon-trash']")
+    HtmlElement trashcanButton();
 }
