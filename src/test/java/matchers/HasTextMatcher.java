@@ -21,7 +21,7 @@ import org.openqa.selenium.WebElement;
 
         @Override
         public void describeTo(final Description description) {
-            description.appendText("element has text");
+            description.appendText("element has text").appendValue(textMatcher);
         }
 
         @Override

@@ -1,28 +1,26 @@
 package steps;
 
-import com.sun.org.glassfish.external.probe.provider.annotations.ProbeListener;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.ShoppingCartPage;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import static matchers.HasTextMatcher.hasText;
+import static matchers.IsElementDisplayedMatcher.isDisplayed;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
 
-public class ShoppingCartPageSteps  {
-    /*WebDriver driver;
-    public ShoppingCartPage(WebDriver driver) {
-        this.driver = driver;
+public class ShoppingCartPageSteps extends BaseSteps {
+
+    public ShoppingCartPageSteps(WebDriver driver) {
+        super(driver);
     }
 
-
-
     public List<String> getProductNames() {
-        List<WebElement> resultList = driver.findElements(productName);
+        List<WebElement> resultList = onShoppingCartPage().productName();
         List<String> titlesOfProducts = new ArrayList<String>();
         for (WebElement resultItem : resultList) {
             titlesOfProducts.add(resultItem.getText());
@@ -31,7 +29,7 @@ public class ShoppingCartPageSteps  {
     }
 
     public List<Integer> getProductQuantity() {
-        List<WebElement> resultList = driver.findElements(quantityOfProduct);
+        List<WebElement> resultList = onShoppingCartPage().quantityOfProduct();
         List<Integer> quantityOfProducts = new ArrayList<Integer>();
         for (WebElement resultItem : resultList) {
             quantityOfProducts.add(Integer.parseInt(resultItem.getAttribute("value")));
@@ -40,50 +38,56 @@ public class ShoppingCartPageSteps  {
     }
 
     public List<Double> getProductPrice() {
-        List<WebElement> resultList = driver.findElements(totalPrice);
+        List<WebElement> resultList = onShoppingCartPage().totalPrice();
         List<Double> productPrices = new ArrayList<Double>();
         for (WebElement resultItem : resultList) {
             productPrices.add(Double.parseDouble(resultItem.getText().replace("$", "")));
         }
         return productPrices;
     }
-    public char[] getProductSize() {
-        List<WebElement> resultList = driver.findElements(colourAndSize);
-        char[] sizeOfProduct = new char[resultList.size()];
+
+    public List<String> getProductSize() {
+        List<WebElement> resultList = onShoppingCartPage().colourAndSize();
+        List<String> sizeOfProduct = new ArrayList<String>(resultList.size());
         int n = 0;
         for (WebElement resultItem : resultList) {
             int lastChar = resultItem.getText().length() - 1;
-            sizeOfProduct[n] = resultItem.getText().charAt(lastChar);
+            sizeOfProduct.add(resultItem.getText().substring(lastChar));
             n++;
         }
         return sizeOfProduct;
     }
 
-    public ShoppingCartPage checkAllDataMatchPreviouslySelectedValues(List<String> productName, char[] size, int[] quantity, List<Double> productPrice) {
+    public ShoppingCartPageSteps checkAllDataMatchPreviouslySelectedValues(List<String> productName, String[] size, int[] quantity, List<Double> productPrice) {
         int i = 0;
-        List<Integer> quantityOfProducts = getProductQuantity();
-        char[] productSizes = getProductSize();
+
         while (i < getProductNames().size()) {
             assertThat(getProductNames().get(i).toLowerCase(), equalTo(productName.get(i).toLowerCase()));
-            assertThat(productSizes[i], equalTo(size[i]));
-            assertThat(quantityOfProducts.get(i), equalTo(quantity[i]));
+            assertThat(getProductSize().get(i), equalTo(size[i]));
+            assertThat(getProductQuantity().get(i), equalTo(quantity[i]));
             assertThat(getProductPrice().get(i), equalTo(productPrice.get(i)));
             i++;
         }
         return this;
     }
-    public ShoppingCartPage deletefirstProductFromCart(){
-        driver.findElement(trashcanButton).click();
+
+    public ShoppingCartPageSteps deleteFirstProductFromCart() {
+        onShoppingCartPage().trashcanButton().should(isDisplayed()).click();
         return this;
     }
-    public ShoppingCartPage checkFirstproductWasDeleted(List<String> productsName){
-        WebDriverWait wait = new WebDriverWait(driver, 30);
-        wait.until(ExpectedConditions.numberOfElementsToBeLessThan(productName,2));
-        assertThat(getProductNames().get(0), not(productsName.get(0)));
+
+    public ShoppingCartPageSteps checkFirstProductWasDeleted(List<String> productsName) {
+        onShoppingCartPage().shoppingCartContains().should(hasText("1 Product")); //это костыльно, но пока лучше придумать не смог
+        assertThat(getProductNames().get(0).toLowerCase(), not(productsName.get(0).toLowerCase()));
         return this;
     }
-    public ShoppingCartPage checkSecondProductIsInList(List<String> productsName){
+
+    public ShoppingCartPageSteps checkSecondProductIsInList(List<String> productsName) {
         assertThat(getProductNames().get(0).toLowerCase(), equalTo(productsName.get(1).toLowerCase()));
         return this;
-    }*/
+    }
+
+    private ShoppingCartPage onShoppingCartPage() {
+        return on(ShoppingCartPage.class);
+    }
 }
