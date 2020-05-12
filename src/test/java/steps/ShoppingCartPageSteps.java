@@ -49,11 +49,9 @@ public class ShoppingCartPageSteps extends BaseSteps {
     public List<String> getProductSize() {
         List<WebElement> resultList = onShoppingCartPage().colourAndSize();
         List<String> sizeOfProduct = new ArrayList<String>(resultList.size());
-        int n = 0;
         for (WebElement resultItem : resultList) {
             int lastChar = resultItem.getText().length() - 1;
             sizeOfProduct.add(resultItem.getText().substring(lastChar));
-            n++;
         }
         return sizeOfProduct;
     }
