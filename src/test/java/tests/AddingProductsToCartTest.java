@@ -1,55 +1,45 @@
 package tests;
 
 import org.testng.annotations.Test;
-import steps.ProductDetailsPageSteps;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import testData.Product;
 
 public class AddingProductsToCartTest extends BaseTest {
 
 
     @Test
     public void autoTest() {
-        List<String> allProductNames = new ArrayList<String>();
-        List<Double> allPricseAtPopup = new ArrayList<Double>();
-        String searchDress = "Printed Dress", searchBlouse = "blouse";
-        int[] quantity = {10, 1};
-        String[] size = {"M", "S"};
-        ProductDetailsPageSteps productDetailsPageSteps = new ProductDetailsPageSteps(driver);
+        Product dress = new Product("Printed Dress", "M", 10, 0);
+        Product blouse = new Product("blouse", "S", 1, 0);
+        products.add(dress);
+        products.add(blouse);
 
-        productDetailsPageSteps
-                .enterProductName(searchDress)
-                .clickSubmitButton()
+        onHomePageSteps
+                .enterProductName(dress.name)
                 .clickOnFirstItem()
-                .selectSize(size[0])
-                .setQuantityTo(String.valueOf(quantity[0]))
+                .selectSize(dress.size)
+                .setQuantityTo(dress.quantity);
+
+        dress.price = onProductDetailsPageSteps.getFullPriceOfProduct(dress);
+
+        onProductDetailsPageSteps
                 .clickAddToCard()
-                .checkThatAllDataMatchTheSelectedValues(searchDress, quantity[0], size[0]);
-
-        allProductNames.add(productDetailsPageSteps.getProductName());
-        allPricseAtPopup.add(productDetailsPageSteps.getPriceAtPopup());
-
-        productDetailsPageSteps
+                .checkThatAllDataMatchTheSelectedValues(dress)
                 .clickContinueShoppingAtPopup()
-                .enterProductName(searchBlouse)
-                .clickSubmitButton()
+                .enterProductName(blouse.name)
                 .clickOnFirstItem()
-                .selectSize(size[1])
+                .selectSize(blouse.size);
+
+        blouse.price = onProductDetailsPageSteps.getFullPriceOfProduct(blouse);
+
+        onProductDetailsPageSteps
                 .clickAddToCard()
-                .checkThatAllDataMatchTheSelectedValues(searchBlouse, quantity[1], size[1]);
-
-        allProductNames.add(productDetailsPageSteps.getProductName());
-        allPricseAtPopup.add(productDetailsPageSteps.getPriceAtPopup());
-
-        productDetailsPageSteps
+                .checkThatAllDataMatchTheSelectedValues(blouse)
                 .clickContinueShoppingAtPopup()
                 .clickShoppingCart()
-                .checkAllDataMatchPreviouslySelectedValues(allProductNames, size, quantity, allPricseAtPopup)
+                .checkAllDataMatchPreviouslySelectedValues(products)
                 .deleteFirstProductFromCart()
-                .checkFirstProductWasDeleted(allProductNames)
-                .checkSecondProductIsInList(allProductNames);
+                .checkFirstProductWasDeleted(products)
+                .checkSecondProductIsInList(products);
 
     }
 }
