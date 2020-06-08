@@ -2,6 +2,7 @@ package pages;
 
 
 import io.qameta.atlas.webdriver.extension.FindBy;
+import io.qameta.atlas.webdriver.extension.Param;
 import tests.HtmlElement;
 
 
@@ -9,14 +10,8 @@ public interface ProductDetailsPage extends BasePage {
     @FindBy("//p[@id='add_to_cart']")
     HtmlElement addToCartButton();
 
-    @FindBy("//select[@id='group_1']/option[1]")
-    HtmlElement selectSizeS();
-
-    @FindBy("//select[@id='group_1']/option[2]")
-    HtmlElement selectSizeM();
-
-    @FindBy("//select[@id='group_1']/option[3]")
-    HtmlElement selectSizeL();
+    @FindBy("//option[contains(@title, '{{ size }}')]")
+    HtmlElement selectSize(@Param("size") String size);
 
     @FindBy("//input[@id='quantity_wanted']")
     HtmlElement quantityTextBox();
@@ -30,7 +25,7 @@ public interface ProductDetailsPage extends BasePage {
     @FindBy("//span[@id='layer_cart_product_quantity']")
     HtmlElement quantityAtPopup();
 
-    @FindBy("//span[@class='continue btn btn-default button exclusive-medium']")
+    @FindBy("//span[contains(@class, 'continue')]")
     HtmlElement continueShoppingButton();
 
     @FindBy("//span[@id='our_price_display']")
