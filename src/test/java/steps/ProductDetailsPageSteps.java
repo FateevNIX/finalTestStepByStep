@@ -3,6 +3,7 @@ package steps;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import pages.ProductDetailsPage;
+import testData.Product;
 
 import java.util.Arrays;
 
@@ -17,30 +18,22 @@ public class ProductDetailsPageSteps extends BaseSteps {
     }
 
     public ProductDetailsPageSteps selectSize(String size) {
-        if (size == "S") {
-            onProductDetailsPage().selectSizeS().should(isDisplayed()).click();
-        } else if (size == "M") {
-            onProductDetailsPage().selectSizeM().should(isDisplayed()).click();
-        } else if (size == "L") {
-            onProductDetailsPage().selectSizeL().should(isDisplayed()).click();
-        }
+        click(onProductDetailsPage().selectSize(size).should(isDisplayed()));
         return this;
     }
 
-    public ProductDetailsPageSteps setQuantityTo(String quantity) {
-
-        onProductDetailsPage().quantityTextBox().clear();
-        onProductDetailsPage().quantityTextBox().sendKeys(quantity);
+    public ProductDetailsPageSteps setQuantityTo(int quantity) {
+        enterText(onProductDetailsPage().quantityTextBox(), (String.valueOf(quantity)));
         return this;
     }
 
     public ProductDetailsPageSteps clickAddToCard() {
-        onProductDetailsPage().addToCartButton().click();
+        click(onProductDetailsPage().addToCartButton());
         return this;
     }
 
     public ProductDetailsPageSteps clickContinueShoppingAtPopup() {
-        onProductDetailsPage().continueShoppingButton().should(isDisplayed()).click();
+        click(onProductDetailsPage().continueShoppingButton());
         return this;
     }
 
@@ -49,49 +42,33 @@ public class ProductDetailsPageSteps extends BaseSteps {
     }
 
     public int getQuantityAtPopup() {
-        int quantityOnPopup = Integer.parseInt(onProductDetailsPage().quantityAtPopup().getText());
-        return quantityOnPopup;
+        return Integer.parseInt(onProductDetailsPage().quantityAtPopup().should(isDisplayed()).getText());
     }
 
-    public char getSizeAtPopup() {
-        WebElement elem = onProductDetailsPage().colourAndSizeAtPopup();
-        int lastChar = elem.getText().length() - 1;
-        char size = elem.getText().charAt(lastChar); //в строке находится цвет и размер. Я забираю только размер
-        return size;
+    public String getSizeAtPopup() {
+        String colourAndSizeText = onProductDetailsPage().colourAndSizeAtPopup().should(isDisplayed()).getText();
+        return colourAndSizeText.substring(colourAndSizeText.length() - 1); //в строке находится цвет и размер. Я забираю только размер
     }
 
-    public double getPriceAtPage() {
-        double priceAtPage = Double.parseDouble(onProductDetailsPage().priceOnPage().getText().replace("$", ""));
-        return priceAtPage;
+    //тут можно бы принимать на входе просто Double, но в тесте тогда сюда передается quantity, и может путать. Так красивей.
+    public double getFullPriceOfProduct(Product product) {
+        return product.quantity * (Double.parseDouble(onProductDetailsPage().priceOnPage().getText().replace("$", "")));
     }
 
     public double getPriceAtPopup() {
-        double priceAtPopup = Double.parseDouble(onProductDetailsPage().priceOnPopup().getText().replace("$", ""));
-        return priceAtPopup;
+        return Double.parseDouble(onProductDetailsPage().priceOnPopup().getText().replace("$", ""));
     }
 
-    public ProductDetailsPageSteps checkThatAllDataMatchTheSelectedValues(String productName, int quantity, String size) {
-        assertThat(getProductName().toLowerCase(), stringContainsInOrder(Arrays.asList(productName.toLowerCase().split(" "))));
-        assertThat(getQuantityAtPopup(), equalTo(quantity));
-        assertThat(String.valueOf(getSizeAtPopup()), equalTo(size));
-        double totalPrice = getPriceAtPage() * quantity; //сумма в попапе равняется сумме на странице умноженной на количество товара
-        assertThat(getPriceAtPopup(), equalTo(totalPrice));
+    public ProductDetailsPageSteps checkThatAllDataMatchTheSelectedValues(Product product) {
+        assertThat(getProductName().toLowerCase(), stringContainsInOrder(Arrays.asList(product.name.toLowerCase().split(" "))));
+        assertThat(getQuantityAtPopup(), equalTo(product.quantity));
+        assertThat(String.valueOf(getSizeAtPopup()), equalTo(product.size));
+        assertThat(getPriceAtPopup(), equalTo(product.price));
         return this;
-    }
-
-    public ProductDetailsPageSteps enterProductName(String text) {
-        onProductDetailsPage().searchTextBox().should(isDisplayed()).clear();
-        onProductDetailsPage().searchTextBox().sendKeys(text);
-        return this;
-    }
-
-    public SearchResultsPageSteps clickSubmitButton() {
-        onProductDetailsPage().submitButton().click();
-        return new SearchResultsPageSteps(driver);
     }
 
     public ShoppingCartPageSteps clickShoppingCart() {
-        onProductDetailsPage().shoppingCartIcon().click();
+        click(onProductDetailsPage().shoppingCartIcon());
         return new ShoppingCartPageSteps(driver);
     }
 
