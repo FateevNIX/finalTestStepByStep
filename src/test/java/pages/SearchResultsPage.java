@@ -1,14 +1,13 @@
 package pages;
 
 
+import blocks.searchResultspageBlocks.ProductsList;
 import io.qameta.atlas.webdriver.extension.FindBy;
-import tests.HtmlElement;
 
 public interface SearchResultsPage extends BasePage {
-    
-    @FindBy("//a[@class='quick-view']")
-    HtmlElement firstItemInGrid();
-    @FindBy("//a[@class='button lnk_view btn btn-default']")
-    HtmlElement moreButtonForFirstItem();
+
+    @FindBy("//ul[contains(@class, 'product_list')]")
+    ProductsList productsList();
+
 
 }
