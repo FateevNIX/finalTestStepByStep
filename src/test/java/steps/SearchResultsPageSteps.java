@@ -1,8 +1,8 @@
 package steps;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.interactions.Actions;
 import pages.SearchResultsPage;
+import tests.HtmlElement;
 
 import static matchers.IsElementDisplayedMatcher.isDisplayed;
 
@@ -12,15 +12,17 @@ public class SearchResultsPageSteps extends BaseSteps {
         super(driver);
     }
 
-    public SearchResultsPageSteps moveToFirstProductInGrid() {
-        Actions action = new Actions(driver);
-        action.moveToElement(onSearchResultsPage().firstItemInGrid());
+    //объеденил с методом clickOnFirstItem поскольку больше нигде не использовался
+  /*  public SearchResultsPageSteps moveToFirstProductInGrid() {
+        getActions().moveToElement(onSearchResultsPage().firstItemInGrid());
         return this;
-    }
+    }*/
 
+  //Можно переделать, чтоб на любой элемент клацнуть можно, но в задании говорится что нужно именно по первому
     public ProductDetailsPageSteps clickOnFirstItem() {
-        moveToFirstProductInGrid();
-        onSearchResultsPage().moreButtonForFirstItem().should(isDisplayed()).click();
+        HtmlElement firstItemInGrid = onSearchResultsPage().productsList().moreButton().get(0).should(isDisplayed());
+        getActions().moveToElement(firstItemInGrid);
+        click(firstItemInGrid);
         return new ProductDetailsPageSteps(driver);
     }
 
