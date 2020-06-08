@@ -9,7 +9,7 @@ import org.openqa.selenium.WebElement;
 import java.util.NoSuchElementException;
 
 public class IsElementNotDisplayedMatcher extends TypeSafeMatcher<WebElement> {
-
+    //Изначально был план использовать этот матчер, потом понял что он излишен, но оставил просто как практику написания матчеров
     @Override
     protected boolean matchesSafely(WebElement element) {
         try {
