@@ -14,7 +14,7 @@ public class AddingProductsToCartTest extends BaseTest {
         products.add(blouse);
 
         onHomePageSteps
-                .enterProductName(dress.name)
+                .searchProductName(dress.name)
                 .clickOnFirstItem()
                 .selectSize(dress.size)
                 .setQuantityTo(dress.quantity);
@@ -25,7 +25,7 @@ public class AddingProductsToCartTest extends BaseTest {
                 .clickAddToCard()
                 .checkThatAllDataMatchTheSelectedValues(dress)
                 .clickContinueShoppingAtPopup()
-                .enterProductName(blouse.name)
+                .searchProductName(blouse.name)
                 .clickOnFirstItem()
                 .selectSize(blouse.size);
 
